@@ -2,8 +2,10 @@ import Card from "../../components/card/Card";
 import Loader from "../../components/loader/Loader";
 import Title from "../../components/title/Title";
 import css from "./HomePage.module.css";
+import {useSelector} from "react-redux";
 
-function HomePage({ isLoading, housesArray }) {
+function HomePage() {
+  const { isLoading, data } = useSelector((state) => state.houses)
   if (isLoading) {
     return <Loader />;
   }
@@ -12,8 +14,8 @@ function HomePage({ isLoading, housesArray }) {
       <Title position="center">Последние объявления</Title>
       <div className={css.cardsWrapper}>
         {/* <Card text="Продаю 6км дом  в Бишкеке" price="50,000" /> */}
-        {housesArray.length ? (
-          housesArray.map((item) => (
+        {data.length ? (
+          data.map((item) => (
             <Card
               key={item.id}
               text={item.title}
@@ -26,6 +28,9 @@ function HomePage({ isLoading, housesArray }) {
           <h2>No adds</h2>
         )}
       </div>
+      <br />
+      <br />
+      <Title position="center">Последние объявления по авто</Title>
     </div>
   );
 }

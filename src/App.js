@@ -15,22 +15,17 @@ import Api from "./api/Api";
 import {store} from "./redux/index"
 import PublicRoute from "./components/routes/PublicRoute";
 import PrivateRoute from "./components/routes/PrivateRoute";
-
+import {useDispatch} from "react-redux"
+import { housesSliceAction } from "./redux/housesSlice";
 
 function App() {
-  const [housesArray, setHousesArray] = useState([]);
-  const [isLoading, setLoading] = useState(true);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     Api.getHouses()
-      .finally(() => {
-        setLoading(false);
-      })
       .then((res) => {
         console.log(res);
-        setHousesArray(res.data);
-        // TODO: logic of saving data to redux here...
-        
+        dispatch( housesSliceAction.setData(res.data) )
       })
   }, []);
 
@@ -40,7 +35,7 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={<HomePage isLoading={isLoading} housesArray={housesArray} />}
+          element={<HomePage />}
         />
         <Route path="/product/:product_id" element={<ProductPage />} />
         <Route path="/login" element={
@@ -52,7 +47,7 @@ function App() {
           path="/dashboard"
           element={
             <PrivateRoute>
-              <DashboardPage isLoading={isLoading} housesArray={housesArray} />
+              <DashboardPage />
             </PrivateRoute>
           }
         />

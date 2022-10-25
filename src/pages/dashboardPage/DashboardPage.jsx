@@ -3,8 +3,11 @@ import Card from "../../components/card/Card";
 import Loader from "../../components/loader/Loader";
 import Title from "../../components/title/Title";
 import css from "../homePage/HomePage.module.css";
+import {useSelector} from "react-redux";
 
-function DasboardPage({ isLoading, housesArray }) {
+function DasboardPage() {
+  const { isLoading, data } = useSelector((state) => state.houses)
+
   if (isLoading) {
     return <Loader />;
   }
@@ -14,8 +17,8 @@ function DasboardPage({ isLoading, housesArray }) {
       <Link className="btn-primary" to="/create-ad">+ Create new element</Link>
       <div className={css.cardsWrapper}>
         {/* <Card text="Продаю 6км дом  в Бишкеке" price="50,000" /> */}
-        {housesArray.length ? (
-          housesArray.map((item) => (
+        {data.length ? (
+          data.map((item) => (
             <Card
               key={item.id}
               text={item.title}
