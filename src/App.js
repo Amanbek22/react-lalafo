@@ -13,6 +13,8 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Api from "./api/Api";
 import {store} from "./redux/index"
+import PublicRoute from "./components/routes/PublicRoute";
+import PrivateRoute from "./components/routes/PrivateRoute";
 
 
 function App() {
@@ -41,14 +43,24 @@ function App() {
           element={<HomePage isLoading={isLoading} housesArray={housesArray} />}
         />
         <Route path="/product/:product_id" element={<ProductPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login" element={
+          <PublicRoute>
+            <LoginPage />
+          </PublicRoute>
+        } />
         <Route
           path="/dashboard"
           element={
-            <DashboardPage isLoading={isLoading} housesArray={housesArray} />
+            <PrivateRoute>
+              <DashboardPage isLoading={isLoading} housesArray={housesArray} />
+            </PrivateRoute>
           }
         />
-        <Route path="/create-ad" element={<CreateAdPage />} />
+        <Route path="/create-ad" element={
+          <PrivateRoute>
+            <CreateAdPage /> 
+          </PrivateRoute>
+        }/>
         <Route path="*" element={<ErrorBlock text="Page not found" />} />
       </Routes>
       <ToastContainer />
