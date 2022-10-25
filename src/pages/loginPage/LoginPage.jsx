@@ -1,20 +1,21 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Title from "../../components/title/Title";
 import css from "./LoginPage.module.css";
+import {useDispatch} from "react-redux"
+import { authSliceAction } from "../../redux/authSlice";
 
 function LoginPage() {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const submit = (e) => {
     e.preventDefault();
     alert(login + password);
     if(login === 'admin' && password === 'admin') {
-      navigate('/dashboard')
+      dispatch( authSliceAction.setAuth(true) )
     } else {
       setError("Login or Password is incorect. Please try again!")
     }

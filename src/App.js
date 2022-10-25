@@ -12,6 +12,7 @@ import CreateAdPage from "./pages/createAdPage/CreateAdPage";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Api from "./api/Api";
+import {store} from "./redux/index"
 
 
 function App() {
@@ -26,6 +27,8 @@ function App() {
       .then((res) => {
         console.log(res);
         setHousesArray(res.data);
+        // TODO: logic of saving data to redux here...
+        
       })
   }, []);
 

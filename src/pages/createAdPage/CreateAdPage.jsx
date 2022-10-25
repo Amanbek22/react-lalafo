@@ -4,12 +4,12 @@ import Title from "../../components/title/Title";
 import { base_url } from "../../constants";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
+import Api from "../../api/Api";
 
 const toastSettings = {
   position: "bottom-right",
   theme: "colored",
-}
+};
 
 function CreateAdPage() {
   const [name, setName] = useState("");
@@ -18,32 +18,27 @@ function CreateAdPage() {
   const [imgUrl, setImgUrl] = useState("");
   const [isSending, setSending] = useState(false);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const submit = (e) => {
     e.preventDefault();
     setSending(true);
     toast.info("Start", toastSettings);
-    fetch(base_url + "houses", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title: name,
-        imgUrl: imgUrl,
-        price: price,
-        description: description,
-      }),
-    }).then((res) => {
-      if(res.status === 201) {
-        toast.success("Success", toastSettings)
-        navigate('/dashboard')
+    const data = {
+      title: name,
+      imgUrl: imgUrl,
+      price: price,
+      description: description,
+    }
+    Api.postHouse(data).then((res) => {
+      if (res.status === 201) {
+        toast.success("Success", toastSettings);
+        navigate("/dashboard");
       } else {
-        toast.error("Error", toastSettings)
-        setSending(false)
+        toast.error("Error", toastSettings);
+        setSending(false);
       }
-    })
+    });
   };
 
   const handleName = (e) => setName(e.target.value);
