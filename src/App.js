@@ -7,16 +7,16 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import ErrorBlock from "./components/errorBlock/ErrorBlock";
 import LoginPage from "./pages/loginPage/LoginPage";
 import DashboardPage from "./pages/dashboardPage/DashboardPage";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import CreateAdPage from "./pages/createAdPage/CreateAdPage";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Api from "./api/Api";
-import {store} from "./redux/index"
 import PublicRoute from "./components/routes/PublicRoute";
 import PrivateRoute from "./components/routes/PrivateRoute";
 import {useDispatch} from "react-redux"
 import { housesSliceAction } from "./redux/housesSlice";
+import { carsSliceAction } from "./redux/carsSlice";
 
 function App() {
   const dispatch = useDispatch();
@@ -26,6 +26,11 @@ function App() {
       .then((res) => {
         console.log(res);
         dispatch( housesSliceAction.setData(res.data) )
+      })
+    
+    Api.getCars()
+      .then((res) => {
+        dispatch( carsSliceAction.setData(res.data) )
       })
   }, []);
 

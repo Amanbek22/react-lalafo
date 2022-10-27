@@ -12,6 +12,7 @@ const toastSettings = {
 };
 
 function CreateAdPage() {
+  const [type, setType] = useState("houses");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
@@ -29,8 +30,8 @@ function CreateAdPage() {
       imgUrl: imgUrl,
       price: price,
       description: description,
-    }
-    Api.postHouse(data).then((res) => {
+    };
+    const response = (res) => {
       if (res.status === 201) {
         toast.success("Success", toastSettings);
         navigate("/dashboard");
@@ -38,13 +39,19 @@ function CreateAdPage() {
         toast.error("Error", toastSettings);
         setSending(false);
       }
-    });
+    }
+    if (type === "houses") {
+      Api.postHouse(data).then(response);
+    } else {
+      Api.postCars(data).then(response);
+    }
   };
 
   const handleName = (e) => setName(e.target.value);
   const handlePrice = (e) => setPrice(e.target.value);
   const handleDescription = (e) => setDescription(e.target.value);
   const handleImg = (e) => setImgUrl(e.target.value);
+  const handleType = (e) => setType(e.target.value);
 
   return (
     <div className="page">
@@ -82,6 +89,30 @@ function CreateAdPage() {
           placeholder="Фото"
           required
         />
+        <div>
+          <label>
+            <input
+              onChange={handleType}
+              checked={type === "houses"}
+              type="radio"
+              name="type"
+              value="houses"
+            />
+            Houses
+          </label>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <label>
+            <input
+              onChange={handleType}
+              checked={type === "cars"}
+              type="radio"
+              name="type"
+              value="cars"
+            />
+            Cars
+          </label>
+        </div>
+        <br />
         <button disabled={isSending} className="btn-primary">
           +Создать
         </button>

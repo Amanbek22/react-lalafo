@@ -6,6 +6,23 @@ import {useSelector} from "react-redux";
 
 function HomePage() {
   const { isLoading, data } = useSelector((state) => state.houses)
+  const { data: carsData } = useSelector((state) => state.cars)
+
+  const renderCards = (d) => {
+    return d.length ? (
+      d.map((item) => (
+        <Card
+          key={item.id}
+          text={item.title}
+          price={item.price}
+          img={item.imgUrl}
+          id={item.id}
+        />
+      ))
+    ) : (
+      <h2>No adds</h2>
+    )
+  }
   if (isLoading) {
     return <Loader />;
   }
@@ -13,24 +30,14 @@ function HomePage() {
     <div className="page">
       <Title position="center">Последние объявления</Title>
       <div className={css.cardsWrapper}>
-        {/* <Card text="Продаю 6км дом  в Бишкеке" price="50,000" /> */}
-        {data.length ? (
-          data.map((item) => (
-            <Card
-              key={item.id}
-              text={item.title}
-              price={item.price}
-              img={item.imgUrl}
-              id={item.id}
-            />
-          ))
-        ) : (
-          <h2>No adds</h2>
-        )}
+        {renderCards(data)}
       </div>
       <br />
       <br />
       <Title position="center">Последние объявления по авто</Title>
+      <div className={css.cardsWrapper}>
+        {renderCards(carsData)}
+      </div>
     </div>
   );
 }
