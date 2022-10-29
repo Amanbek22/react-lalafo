@@ -11,32 +11,23 @@ import { useEffect } from "react";
 import CreateAdPage from "./pages/createAdPage/CreateAdPage";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import Api from "./api/Api";
 import PublicRoute from "./components/routes/PublicRoute";
 import PrivateRoute from "./components/routes/PrivateRoute";
 import {useDispatch} from "react-redux"
-import { housesSliceAction } from "./redux/housesSlice";
-import { carsSliceAction } from "./redux/carsSlice";
+import { fetchHouses } from "./redux/housesSlice";
+import { fetchCars } from "./redux/carsSlice";
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    Api.getHouses()
-      .then((res) => {
-        console.log(res);
-        dispatch( housesSliceAction.setData(res.data) )
-      })
-    
-    Api.getCars()
-      .then((res) => {
-        dispatch( carsSliceAction.setData(res.data) )
-      })
+    dispatch(fetchHouses())
+    dispatch(fetchCars())  
   }, []);
 
   return (
     <div className="App">
-      <Header />
+      <Header text="Hello" />
       <Routes>
         <Route
           path="/"
